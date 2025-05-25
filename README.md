@@ -24,9 +24,10 @@ This repository includes my code for retrieving additional data from NSF's websi
 - Obligated (Note: Does not capture the FY in which the funds were obligated; total only)
 - Principal Investigator Name (Note: Does not capture Co-PIs, Former PIs, or Former Co-PIs)
 - Principal Investigator Email
-- Whether the online award page includes a Project Outcomes Report (Note: Does not include report text)
 - A link to the award record on NSF's server
 - Abstract
+- Whether the online award page includes a Project Outcomes Report (Note: Does not include report text)
+- Obligations 2025, 2024, 2023 ... 2013 (As separate columns; these are obligations by Fiscal Year; sum to 'Obligated')
 
 ## Requirements
 Code is run on a MacOS and requires zsh as the shell. Requires the original NSF file in the main directory.
