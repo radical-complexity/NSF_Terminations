@@ -7,7 +7,7 @@
 
 
 
-echo "AwardID,NSFDirectorate,NSFOrg,AwardInstrument,Recipient,StartDate,EndDate,LastAmendmentDate,TotalIntendedAwardAmount,TotalAwardedAmountToDate,PrincipalInvestigator,PIEmail,Link,Abstract,HasProjectOutcomesReport,OB_2025,OB_2024,OB_2023,OB_2022,OB_2021,OB_2020,OB_2019,OB_2018,OB_2017,OB_2016,OB_2015,OB_2014,OB_2013">NSF_Canceled_Programs_Processed.csv
+echo "AwardID,NSFDirectorate,NSFOrg,AwardInstrument,Recipient,Title,StartDate,EndDate,LastAmendmentDate,TotalIntendedAwardAmount,TotalAwardedAmountToDate,PrincipalInvestigator,PIEmail,Link,Abstract,HasProjectOutcomesReport,OB_2025,OB_2024,OB_2023,OB_2022,OB_2021,OB_2020,OB_2019,OB_2018,OB_2017,OB_2016,OB_2015,OB_2014,OB_2013">NSF_Canceled_Programs_Processed.csv
 
 LL=$(($2+1))
 
@@ -20,6 +20,7 @@ head -n $LL $1>$1.REPACKAGE.TMP
       if [ -f "./raw/$awardID.nsf.txt" ]
       then
         NSFOrg=`grep -A 2 "NSF Org:" ./raw/$awardID.nsf.txt | tail -n 1 | sed -e 's/[[:space:]]*$//'`
+        Title=`grep -A 1 "^Award Abstract" ./raw/$awardID.nsf.txt | tail -n 1`
         StartDate=`grep -A 1 "Start Date" ./raw/$awardID.nsf.txt | tail -n 1 | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
         EndDate=`grep -A 1 "End Date" ./raw/$awardID.nsf.txt | tail -n 1 | awk -F"(" '{print($1)};' | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
         PrincipalInvestigator=`grep "(Principal Investigator)" ./raw/$awardID.nsf.txt | awk -F"(" '{print($1);}' | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
@@ -51,7 +52,7 @@ head -n $LL $1>$1.REPACKAGE.TMP
         fi
         Link="https://www.nsf.gov/awardsearch/showAward?AWD_ID=$awardID"        
 
-        echo "$awardID,$Directorate,\"$NSFOrg\",$AwardInstrument,\"$Recipient\",\"$StartDate\",\"$EndDate\",\"$LAD\",\"$TIAA\",\"$TAAD\",$PrincipalInvestigator,$PrincipalInvestigatorEmail,$Link,\"$ABSTRACT\",\"$ProjectOutcomes\",\"$OB2025\",\"$OB2024\",\"$OB2023\",\"$OB2022\",\"$OB2021\",\"$OB2020\",\"$OB2019\",\"$OB2018\",\"$OB2017\",\"$OB2016\",\"$OB2015\",\"$OB2014\",\"$OB2013\"">>NSF_Canceled_Programs_Processed.csv
+        echo "$awardID,$Directorate,\"$NSFOrg\",$AwardInstrument,\"$Recipient\",\"$Title\",\"$StartDate\",\"$EndDate\",\"$LAD\",\"$TIAA\",\"$TAAD\",$PrincipalInvestigator,$PrincipalInvestigatorEmail,$Link,\"$ABSTRACT\",\"$ProjectOutcomes\",\"$OB2025\",\"$OB2024\",\"$OB2023\",\"$OB2022\",\"$OB2021\",\"$OB2020\",\"$OB2019\",\"$OB2018\",\"$OB2017\",\"$OB2016\",\"$OB2015\",\"$OB2014\",\"$OB2013\"">>NSF_Canceled_Programs_Processed.csv
       else
         echo "Award $awardID does not exist."
       fi
