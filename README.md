@@ -17,6 +17,7 @@ This repository includes my code for retrieving additional data from NSF's websi
 - NSF Unit
 - Award Instrument
 - Recipient
+- Title
 - Start Date
 - End Date (Note: Always 'estimated')
 - Last Amendment Date

@@ -4,15 +4,27 @@
 # Assumes files have already been converted from
 # html to text and special encoding/characters
 # have been removed.
+#
+# Usage
+#
+# repackage.sh FILENAME LINELIMIT
+#
+# Usage example
+# ./repackage.sh NSF-Terminated-Awards.csv 100
+#
 
-
-
+# Write the headers to the destination file
 echo "AwardID,NSFDirectorate,NSFOrg,AwardInstrument,Recipient,Title,StartDate,EndDate,LastAmendmentDate,TotalIntendedAwardAmount,TotalAwardedAmountToDate,PrincipalInvestigator,PIEmail,Link,Abstract,HasProjectOutcomesReport,OB_2025,OB_2024,OB_2023,OB_2022,OB_2021,OB_2020,OB_2019,OB_2018,OB_2017,OB_2016,OB_2015,OB_2014,OB_2013">NSF_Canceled_Programs_Processed.csv
 
+# Determine the line limit
+# Note that the line limit number is 1 greater than the arg passed
+# to account for the header row
 LL=$(($2+1))
 
+# Creates a temp file with only the required lines
 head -n $LL $1>$1.REPACKAGE.TMP
 {
+    # Skips the header line
     read
     while IFS=, read -r awardID dir org title amt REST
     do
