@@ -32,7 +32,7 @@ head -n $LL $1>$1.REPACKAGE.TMP
       if [ -f "./raw/$awardID.nsf.txt" ]
       then
         NSFOrg=`grep -A 2 "NSF Org:" ./raw/$awardID.nsf.txt | tail -n 1 | sed -e 's/[[:space:]]*$//'`
-        Title=`grep -A 1 "^Award Abstract" ./raw/$awardID.nsf.txt | tail -n 1`
+        Title=`grep -A 1 "^Award Abstract" ./raw/$awardID.nsf.txt | tail -n 1 | sed -e 's/"//g'`
         StartDate=`grep -A 1 "Start Date" ./raw/$awardID.nsf.txt | tail -n 1 | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
         EndDate=`grep -A 1 "End Date" ./raw/$awardID.nsf.txt | tail -n 1 | awk -F"(" '{print($1)};' | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
         PrincipalInvestigator=`grep "(Principal Investigator)" ./raw/$awardID.nsf.txt | awk -F"(" '{print($1);}' | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
