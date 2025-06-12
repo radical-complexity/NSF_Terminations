@@ -14,7 +14,7 @@
 #
 
 # Write the headers to the destination file
-echo "AwardID,NSFDirectorate,NSFOrg,AwardInstrument,Recipient,CongressionalDistrict,Title,StartDate,EndDate,LastAmendmentDate,TotalIntendedAwardAmount,TotalAwardedAmountToDate,PrincipalInvestigator,PIEmail,Link,Abstract,HasProjectOutcomesReport,OB_2025,OB_2024,OB_2023,OB_2022,OB_2021,OB_2020,OB_2019,OB_2018,OB_2017,OB_2016,OB_2015,OB_2014,OB_2013">NSF_Canceled_Programs_Processed.csv
+echo "AwardID,NSFDirectorate,NSFOrg,AwardInstrument,Recipient,State,CongressionalDistrict,Title,StartDate,EndDate,LastAmendmentDate,TotalIntendedAwardAmount,TotalAwardedAmountToDate,PrincipalInvestigator,PIEmail,Link,Abstract,HasProjectOutcomesReport,OB_2025,OB_2024,OB_2023,OB_2022,OB_2021,OB_2020,OB_2019,OB_2018,OB_2017,OB_2016,OB_2015,OB_2014,OB_2013">NSF_Canceled_Programs_Processed.csv
 
 # Determine the line limit
 # Note that the line limit number is 1 greater than the arg passed
@@ -39,6 +39,13 @@ head -n $LL $1>$1.REPACKAGE.TMP
         PrincipalInvestigatorEmail=`grep "(Principal Investigator)" ./raw/$awardID.nsf.txt | awk -F")" '{print($2);}' | sed -e 's/[[:space:]]*$//' | sed -e 's/^[[:space:]]*//'`
         AwardInstrument=`grep -A 1 "Award Instrument" ./raw/$awardID.nsf.txt | tail -n 1`
         Recipient=`grep -A 1 "Recipient:" ./raw/$awardID.nsf.txt | tail -n 1`
+        if [ ! -n "$Recipient" ]; then
+          Recipient="$PrincipalInvestigator"
+        fi
+        State=`grep -A 20 "Primary Place of Performance:" ./raw/$awardID.nsf.txt | grep "  US  " | head -n 1 | awk -F" " '{print($1);}'` 
+        if [ ! -n "$State" ]; then
+          State=`grep -A 20 "Recipient Sponsored Research Office:" ./raw/$awardID.nsf.txt | grep "  US  " | head -n 1 | awk -F" " '{print($1);}'`
+        fi
         CongDist=`grep -A 1 "Sponsor Congressional District:" ./raw/$awardID.nsf.txt | tail -n 1`
         TIAA=`grep -A 1 "Total Intended Award Amount:" ./raw/$awardID.nsf.txt | tail -n 1 `
         TAAD=`grep -A 1 "Total Awarded Amount to Date:" ./raw/$awardID.nsf.txt | tail -n 1 `
@@ -65,7 +72,7 @@ head -n $LL $1>$1.REPACKAGE.TMP
         fi
         Link="https://www.nsf.gov/awardsearch/showAward?AWD_ID=$awardID"        
 
-        echo "$awardID,$Directorate,\"$NSFOrg\",$AwardInstrument,\"$Recipient\",\"$CongDist\",\"$Title\",\"$StartDate\",\"$EndDate\",\"$LAD\",\"$TIAA\",\"$TAAD\",$PrincipalInvestigator,$PrincipalInvestigatorEmail,$Link,\"$ABSTRACT\",\"$ProjectOutcomes\",\"$OB2025\",\"$OB2024\",\"$OB2023\",\"$OB2022\",\"$OB2021\",\"$OB2020\",\"$OB2019\",\"$OB2018\",\"$OB2017\",\"$OB2016\",\"$OB2015\",\"$OB2014\",\"$OB2013\"">>NSF_Canceled_Programs_Processed.csv
+        echo "$awardID,$Directorate,\"$NSFOrg\",$AwardInstrument,\"$Recipient\",\"$State\",\"$CongDist\",\"$Title\",\"$StartDate\",\"$EndDate\",\"$LAD\",\"$TIAA\",\"$TAAD\",$PrincipalInvestigator,$PrincipalInvestigatorEmail,$Link,\"$ABSTRACT\",\"$ProjectOutcomes\",\"$OB2025\",\"$OB2024\",\"$OB2023\",\"$OB2022\",\"$OB2021\",\"$OB2020\",\"$OB2019\",\"$OB2018\",\"$OB2017\",\"$OB2016\",\"$OB2015\",\"$OB2014\",\"$OB2013\"">>NSF_Canceled_Programs_Processed.csv
       else
         echo "Award $awardID does not exist."
       fi

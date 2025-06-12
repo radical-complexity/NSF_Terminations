@@ -17,6 +17,8 @@ This repository includes my code for retrieving additional data from NSF's websi
 - NSF Unit
 - Award Instrument
 - Recipient
+- State
+- Congressional District
 - Title
 - Start Date
 - End Date (Note: Always 'estimated')
@@ -30,8 +32,13 @@ This repository includes my code for retrieving additional data from NSF's websi
 - Whether the online award page includes a Project Outcomes Report (Note: Does not include report text)
 - Obligations 2025, 2024, 2023 ... 2013 (As separate columns; these are obligations by Fiscal Year; sum to 'Obligated')
 
+Note that 'State' was drawn from the primarily location where the work was to be performed, except for a few cases that appear to be international work; in those cases the location of the sponsored project office was used.
+
+Note also that for a few cases, generally fellowships, the recipient was an individual, not an institution; in NSF's records, this meant the 'Recipient' field was blank. In these cases, the name of the PI was used.
+
+
 ## Requirements
-Code is run on a MacOS and requires zsh as the shell. Requires the original NSF file in the main directory.
+Code is run on a MacOS and requires zsh as the shell. Makes use of Mac textutil. Requires the original NSF file in the main directory.
 
 - Download the NSF file
 - Run 'retrieve.sh'; note that it retrieves each award individually and hits the NSF server to do so, with a delay of 10 seconds between each ping to avoid overtaxing their server
